@@ -60,10 +60,7 @@ function p_value(T_obs, w, m,n,samples,num_perm,multi_thread)
 			q11_1 = sum(w[1,1:m] .* w[2,1:m])
 			q11_0 = sum(w[1,(m+1):n] .* w[2,(m+1):n])
 
-			println("q00_1: ", q00_1)
-			println("q00_0: ", q00_0)
-			println("q11_1: ", q11_1)
-			println("q11_0: ", q11_0)
+		
 			
 			#realized data
 			w_data = vcat(w[1, 1:m], w[2,(m+1):n])
@@ -114,8 +111,6 @@ function p_value(T_obs, w, m,n,samples,num_perm,multi_thread)
 
 		end		
 	end
-	println("tau_0: ", tau_0)
-	println("T_obs: ", T_obs)
 	
 	return p/samples, num_perm, data_table
 end
@@ -226,7 +221,7 @@ function tau_compatible(N,samples,t0,alpha,m,n,num_perm,multi_thread) #here t0 i
 		
 		if is_possible(N,j,t0)
 
-			println("Second loop: ", j)
+			#println("Second loop: ", j)
             #find lowest possible v10
 			v10 = find_v10(N,j,t0)
 			v11 = j - v10
@@ -356,7 +351,7 @@ temp_table2=update(temp_table,100000,8,16)
 update_pval(temp_table2,-3,100000,-6/8,16)
 
 # ╔═╡ 2fca2bd9-8cf3-4cb5-8379-364f81fef446
-function perm_test(n11,n10,n01,n00,alpha,m,n,multi_thread,epsilon=0.001,nsample=1000)
+function perm_test(n11,n10,n01,n00,alpha,m,n,multi_thread,epsilon=0.01,nsample=1000)
 	
 	#printing basic information
 	println("Number of units in the experiment: ",n )
@@ -368,9 +363,9 @@ function perm_test(n11,n10,n01,n00,alpha,m,n,multi_thread,epsilon=0.001,nsample=
 	println("Coverage probability of the two-sided interval: ", alpha)
 
 	
-	#nsample = Int(floor( 1/ (epsilon^2) * log(4 * n ^3/epsilon) ) + 1)
+	nsample = Int(floor( 1/ (epsilon^2) * log(4 * n ^3/epsilon) ) + 1)
 
-	nsample =100000
+	#nsample =100000
 	println("Number of Monte Carlo draws for each permutation test: ", nsample)
 
 	if multi_thread==true
@@ -401,6 +396,15 @@ perm_test(1, 1, 1, 13,0.05,2,16,false)
 
 # ╔═╡ a258585f-08f8-4c64-9836-b9a48431873c
 perm_test(6, 0, 11, 3,0.05,6,20,false)
+
+# ╔═╡ 8f1f12ac-42f6-4d14-8917-68cc21ba7ef1
+perm_test(6, 4, 4, 6,0.05,10,20,false)
+
+# ╔═╡ e6e84131-1552-4a28-80f7-90cc34dfe855
+perm_test(1, 1, 3, 19,0.05,2,24,false)
+
+# ╔═╡ b3a1fd63-a010-4b57-9f39-58adda736574
+perm_test(8, 4, 5, 7,0.05,12,24,false)
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1504,5 +1508,8 @@ version = "1.4.1+0"
 # ╠═c9f65dfc-560b-4938-b53d-60b66bef3add
 # ╠═5a266607-2dd5-4db4-9290-64a3b514ec2a
 # ╠═a258585f-08f8-4c64-9836-b9a48431873c
+# ╠═8f1f12ac-42f6-4d14-8917-68cc21ba7ef1
+# ╠═e6e84131-1552-4a28-80f7-90cc34dfe855
+# ╠═b3a1fd63-a010-4b57-9f39-58adda736574
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
